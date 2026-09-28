@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BudgetMonitor — Personal Finance Tracking</title>
+  <meta name="description" content="BudgetMonitor is a personal finance application that consolidates the owner's own bank and brokerage accounts into a private local database for budgeting, portfolio and net-worth reporting." />
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+           max-width: 760px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.7; }
+    h1 { color: #1a1a2e; margin-bottom: 4px; }
+    .tagline { color: #666; margin-top: 0; font-size: 1.05em; }
+    h2 { color: #16213e; margin-top: 2em; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+    a { color: #0077cc; }
+    .box { background: #f7f9fc; border: 1px solid #e3e9f2; border-radius: 8px;
+           padding: 16px 20px; margin: 24px 0; }
+    .box p { margin: 6px 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eee; font-size: 0.95em; }
+    th { color: #16213e; }
+    ul { padding-left: 20px; }
+    li { margin: 6px 0; }
+    footer { margin-top: 3em; font-size: 0.85em; color: #888; border-top: 1px solid #eee; padding-top: 16px; }
+    .nav { font-size: 0.9em; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+  <p class="nav"><a href="../">← Nathan Pool</a></p>
+
+  <h1>BudgetMonitor</h1>
+  <p class="tagline">Private personal finance tracking, budgeting, and net-worth reporting.</p>
+
+  <div class="box">
+    <p><strong>Application type:</strong> Personal, single-user financial application</p>
+    <p><strong>Operated by:</strong> Nathan Pool (individual developer)</p>
+    <p><strong>Contact:</strong> <a href="mailto:nathanpool920@gmail.com">nathanpool920@gmail.com</a></p>
+    <p><strong>Privacy policy:</strong>
+       <a href="https://npool9.github.io/privacy-policy/budgetmonitor/">npool9.github.io/privacy-policy/budgetmonitor/</a></p>
+  </div>
+
+  <h2>What BudgetMonitor Does</h2>
+  <p>
+    BudgetMonitor is a self-hosted personal finance application that I built and operate for
+    managing my own household finances. It securely connects to my own financial accounts,
+    consolidates the transaction and holdings data into a private database running on my
+    personal computer, and produces reporting that is not available from any single
+    institution's own app.
+  </p>
+  <p>Specifically, it:</p>
+  <ul>
+    <li>Retrieves transactions and balances from my own checking, savings, and credit card accounts</li>
+    <li>Retrieves investment holdings and investment transactions from my own brokerage accounts</li>
+    <li>Categorizes spending and tracks it against a monthly budget tied to my pay cycle</li>
+    <li>Reports portfolio composition, cost basis, and unrealized gain/loss across brokerages</li>
+    <li>Calculates a consolidated net-worth figure spanning cash, investments, and debt</li>
+  </ul>
+
+  <h2>Scope of Use</h2>
+  <p>
+    This is a personal-use application, not a commercial product or service. It has a single
+    user — me, the developer and account owner. It is not distributed, not offered to the
+    public, has no customers or end users, and does not process data belonging to anyone
+    other than myself. Every account it connects to is an account I personally own.
+  </p>
+
+  <h2>How Account Data Is Accessed</h2>
+  <p>
+    BudgetMonitor uses <a href="https://plaid.com/" rel="noopener">Plaid</a> to connect to
+    financial institutions. Authentication is handled entirely by Plaid Link and the
+    institution's own OAuth flow.
+  </p>
+  <ul>
+    <li><strong>Read-only.</strong> The application only retrieves account, transaction, and holdings data. It cannot move money, initiate payments, or modify anything at the institution.</li>
+    <li><strong>No credentials are ever seen by the application.</strong> Banking usernames and passwords are entered directly with the institution through Plaid's OAuth flow. BudgetMonitor never receives, handles, or stores them.</li>
+    <li><strong>Access tokens are encrypted at rest.</strong> Plaid access tokens are encrypted locally and are never committed to source control or transmitted anywhere.</li>
+    <li><strong>All transport is HTTPS.</strong> API communication with Plaid occurs exclusively over TLS.</li>
+  </ul>
+
+  <h2>Where Data Is Stored</h2>
+  <p>
+    All retrieved financial data is stored in a PostgreSQL database on my own
+    password-protected personal computer. There is no hosted backend, no cloud database,
+    and no server that any other person can reach.
+  </p>
+  <p>
+    Financial data is <strong>never</strong> sold, shared, transmitted to third parties, used
+    for advertising, or used to train any model. There are no analytics or tracking
+    services in the application. Data is retained only as long as it is useful to me and
+    can be deleted by me at any time.
+  </p>
+
+  <h2>Connected Institutions</h2>
+  <table>
+    <tr><th>Institution</th><th>Data Used</th><th>Status</th></tr>
+    <tr><td>Capital One</td><td>Accounts, transactions</td><td>Connected</td></tr>
+    <tr><td>American Express</td><td>Accounts, transactions</td><td>Connected</td></tr>
+    <tr><td>PNC Bank</td><td>Accounts, transactions</td><td>Connected</td></tr>
+    <tr><td>Robinhood</td><td>Accounts, investment holdings and transactions</td><td>Connected</td></tr>
+    <tr><td>Fidelity</td><td>Accounts, investment holdings and transactions</td><td>Requested</td></tr>
+  </table>
+
+  <h2>Technology</h2>
+  <p>
+    Python application using the Plaid API, with a PostgreSQL database and a local Flask
+    server used solely to complete institution OAuth redirects on <code>localhost</code>.
+    The application exposes no public endpoints.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about this application can be directed to
+    <a href="mailto:nathanpool920@gmail.com">nathanpool920@gmail.com</a>.
+  </p>
+
+  <footer>
+    © 2026 Nathan Pool. BudgetMonitor is a personal, non-commercial application.<br />
+    <a href="https://npool9.github.io/privacy-policy/budgetmonitor/">Privacy Policy</a>
+  </footer>
+</body>
+</html>
